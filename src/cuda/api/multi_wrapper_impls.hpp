@@ -48,7 +48,8 @@ inline event_t create(
 	return event::detail::create(device_id , uses_blocking_sync, records_timing, interprocess);
 }
 
-} // namespace event_t
+} // namespace event
+
 
 
 // device_t methods
@@ -99,6 +100,19 @@ inline event_t device_t<AssumedCurrent>::create_event(
 
 inline device_t<detail::do_not_assume_device_is_current>
 event_t::device() const { return cuda::device::get(device_id_); }
+
+void event_t::record(stream_t<>& stream)
+{
+	// Note:
+	// TODO: Perhaps check the device ID here, rather than
+	// have the Runtime API call fail?
+	event::detail::enqueue(stream.id(), id_);
+}
+
+void event_t::fire(stream_t<>& stream) {
+	record(stream);
+	stream.synchronize();
+}
 
 
 // stream_t methods
