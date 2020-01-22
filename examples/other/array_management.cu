@@ -47,7 +47,7 @@ void array_3d_example(Device& device, size_t w, size_t h, size_t d) {
 	namespace grid = cuda::grid;
 
 	const cuda::array::dimensions_t<3> dims = {w, h, d};
-	cuda::array::array_t<float, 3> arr(device, dims);
+	cuda::array_t<float, 3> arr(device, dims);
 	auto ptr_in = cuda::memory::managed::make_unique<float[]>(arr.size());
 	std::iota(ptr_in.get(), ptr_in.get() + arr.size(), 0);
 	auto ptr_out = cuda::memory::managed::make_unique<float[]>(arr.size());
@@ -76,7 +76,7 @@ void array_3d_example(Device& device, size_t w, size_t h, size_t d) {
 	}
 
 	// copy between arrays and memory spaces
-	cuda::array::array_t<float, 3> other_arr(device, dims);
+	cuda::array_t<float, 3> other_arr(device, dims);
 	cuda::memory::copy(other_arr, ptr_out.get());
 	cuda::memory::copy(ptr_in.get(), other_arr);
 
@@ -99,7 +99,7 @@ void array_2d_example(Device& device, size_t w, size_t h)
 	namespace grid = cuda::grid;
 
 	const cuda::array::dimensions_t<2> dims = {w, h};
-	cuda::array::array_t<float, 2> arr(device , dims);
+	cuda::array_t<float, 2> arr(device , dims);
 	auto ptr_in = cuda::memory::managed::make_unique<float[]>(arr.size());
 	std::iota(ptr_in.get(), ptr_in.get() + arr.size(), 0);
 	auto ptr_out = cuda::memory::managed::make_unique<float[]>(arr.size());
@@ -144,7 +144,7 @@ void array_2d_example(Device& device, size_t w, size_t h)
 	}
 
 	// copy between arrays and memory spaces
-	cuda::array::array_t<float, 2> other_arr(device, dims);
+	cuda::array_t<float, 2> other_arr(device, dims);
 	cuda::memory::copy(other_arr, ptr_out.get());
 	cuda::memory::copy(ptr_in.get(), other_arr);
 	for (size_t k = 0; k < arr.size(); ++k) {
