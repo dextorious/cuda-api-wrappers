@@ -67,7 +67,7 @@ void array_3d_example(Device& device, size_t w, size_t h, size_t d) {
 	cuda::launch(
 		kernels::from_3D_texture_to_memory_space,
 		cuda::make_launch_config(grid_dims, block_dims),
-		tv.get(), ptr_out.get(), w, h, d);
+		tv, ptr_out.get(), w, h, d);
 	device.synchronize();
 	for (size_t i = 0; i < arr.size(); ++i) {
 		if (ptr_out[i] != i) {
@@ -128,7 +128,7 @@ void array_2d_example(Device& device, size_t w, size_t h)
 	cuda::launch(
 		kernels::from_2D_texture_to_memory_space,
 		cuda::make_launch_config(grid_dims, block_dims),
-		tv.get(), ptr_out.get(), w, h);
+		tv, ptr_out.get(), w, h);
 	cuda::memory::copy(ptr_out.get(), arr);
 	device.synchronize();
 	for (size_t i = 0; i < h; ++i) {
